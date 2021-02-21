@@ -2,7 +2,8 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph">
+    android:id="@+id/nav_graph"
+    app:startDestination="@+id/loginFragment">
     <fragment
         android:id="@+id/loginFragment"
         android:name="pillowisgod.com.myapplication.fragments.LoginFragment"
@@ -10,10 +11,33 @@
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_toProfile"
-            app:destination="@+id/profileFragment" />
+            app:destination="@+id/navigationProfile" />
         <action
             android:id="@+id/action_loginFragment_error"
             app:destination="@+id/errorDialog" />
     </fragment>
+    <dialog
+        android:id="@+id/errorDialog"
+        android:name="pillowisgod.com.myapplication.fragments.ErrorDialog"
+        android:label="error_dialog"
+        tools:layout="@layout/fragment_error"/>
+    <navigation android:id="@+id/navigationProfile"
+        app:startDestination="@layout/fragment_profile">
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="pillowisgod.com.myapplication.fragments.ProfileFragment"
+        android:label="profile_fragment"
+        tools:layout="@layout/fragment_profile">
+        <action android:id="@+id/action_profileFragment_toList"
+            app:destination="@+id/listFragment"/>
+    </fragment>
+        <fragment
+            android:id="@+id/listFragment"
+            android:name="pillowisgod.com.myapplication.fragments.ListFragment"
+            android:label="list_fragment"
+            tools:layout="@layout/fragment_list">
+
+        </fragment>
+    </navigation>
 
 </navigation>
