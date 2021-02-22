@@ -11,7 +11,7 @@
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_toProfile"
-            app:destination="@+id/navigationProfile" />
+            app:destination="@+id/profileFragment" />
         <action
             android:id="@+id/action_loginFragment_error"
             app:destination="@+id/errorDialog" />
@@ -21,8 +21,7 @@
         android:name="pillowisgod.com.myapplication.fragments.ErrorDialog"
         android:label="error_dialog"
         tools:layout="@layout/fragment_error"/>
-    <navigation android:id="@+id/navigationProfile"
-        app:startDestination="@layout/fragment_profile">
+
     <fragment
         android:id="@+id/profileFragment"
         android:name="pillowisgod.com.myapplication.fragments.ProfileFragment"
@@ -38,6 +37,5 @@
             tools:layout="@layout/fragment_list">
 
         </fragment>
-    </navigation>
 
 </navigation>
