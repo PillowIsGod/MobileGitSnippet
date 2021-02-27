@@ -2,6 +2,7 @@ package pillowisgod.com.myapplication.data.repositories
 
 import io.reactivex.Single
 import pillowisgod.com.myapplication.data.repositories.model.AccessToken
+import pillowisgod.com.myapplication.data.repositories.model.GistResponseModel
 import pillowisgod.com.myapplication.data.repositories.model.SuccessfulResponseModel
 import retrofit2.Call
 import retrofit2.Response
@@ -24,5 +25,6 @@ interface LoginCall {
     ) : Response<AccessToken>
 
 
-
+    @GET("gists")
+    suspend fun getGistsList(@Header("Authorization") token : String) : Response<List<GistResponseModel>>
 }

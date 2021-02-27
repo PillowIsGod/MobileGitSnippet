@@ -19,11 +19,11 @@ import pillowisgod.com.myapplication.helpers.Constants
 import pillowisgod.com.myapplication.helpers.Constants.CALLBACK_URL
 import pillowisgod.com.myapplication.helpers.Constants.CLIENT_ID
 import pillowisgod.com.myapplication.helpers.Constants.GIT_LOGIN_CALL
+import pillowisgod.com.myapplication.helpers.Constants.accessToken
 
 class LoginViewModel : ViewModel() {
 
-    val compositeDisposable = CompositeDisposable()
-    var accessToken: AccessToken? = null
+
 
     fun loginIntent() : Intent {
         return Intent(Intent.ACTION_VIEW, Uri.parse("$GIT_LOGIN_CALL?client_id=$CLIENT_ID&scope=repo,gist&redirect_uri=$CALLBACK_URL"))

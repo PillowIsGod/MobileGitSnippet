@@ -29,6 +29,8 @@
         tools:layout="@layout/fragment_profile">
         <action android:id="@+id/action_profileFragment_toList"
             app:destination="@+id/listFragment"/>
+        <action android:id="@+id/action_profileFragment_toLoginFragm"
+            app:destination="@+id/loginFragment"/>
     </fragment>
         <fragment
             android:id="@+id/listFragment"
