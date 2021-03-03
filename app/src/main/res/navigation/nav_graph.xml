@@ -11,7 +11,9 @@
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_toProfile"
-            app:destination="@+id/profileFragment" />
+            app:destination="@+id/profileFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_loginFragment_error"
             app:destination="@+id/errorDialog" />
@@ -37,7 +39,21 @@
             android:name="pillowisgod.com.myapplication.fragments.ListFragment"
             android:label="list_fragment"
             tools:layout="@layout/fragment_list">
-
+            <action android:id="@+id/action_listFragment_toGist"
+                app:destination="@+id/gistFragment"
+                app:popUpTo="@id/listFragment"
+                app:popUpToInclusive="true"
+                />
         </fragment>
 
+    <fragment
+        android:id="@+id/gistFragment"
+        android:name="pillowisgod.com.myapplication.fragments.GistFragment"
+        android:label="gist_fragment"
+        tools:layout="@layout/fragment_gist">
+        <action android:id="@+id/action_gistFragm_toList"
+            app:destination="@+id/listFragment"
+            app:popUpTo="@id/gistFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
 </navigation>

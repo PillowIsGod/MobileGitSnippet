@@ -5,11 +5,11 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class GistResponseModel (
-    @SerializedName("url")
-    val url : String,
+data class GistFilesModel (
     @SerializedName("description")
-    val description : String,
+    var description : String,
     @SerializedName("created_at")
-    val date : String
+    val date : String,
+    @SerializedName("files")
+    val files : FilesRemoteModel
         ) : Parcelable

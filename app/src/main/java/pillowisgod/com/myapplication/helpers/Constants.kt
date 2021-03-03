@@ -10,5 +10,7 @@ object Constants {
     const val CALLBACK_URL = "mobilegitschema://mobilegitsnippet.com"
     const val LOGIN_URL = "$GIT_LOGIN_CALL?client_id=$CLIENT_ID&scope=repo,gist&redirect_uri=$CALLBACK_URL"
     const val MODEL_KEY = "ModelKey18asd3377"
+    const val GIST_LIST_MODEL_KEY = "GistListModelKey1834134123412"
+    const val SINGLE_GIST_MODEL_KEY = "SingleGistModelKey1099u985818593"
     var accessToken: AccessToken? = null
 }

@@ -1,16 +1,23 @@
 package pillowisgod.com.myapplication.data.repositories.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class GistsModel (
     @SerializedName("filename")
-    val gistName : String,
+    var gistName : String,
     @SerializedName("language")
-    val gistLang : String?,
+    var gistLang : String?,
     @SerializedName("raw_url")
-    val rawUrl : String,
+    var rawUrl : String,
     @SerializedName("type")
-    val type : String,
+    var type : String,
     @SerializedName("size")
-    val size : Int
-        )
+    var size : Int,
+    @SerializedName("truncated")
+    val truncated : Boolean,
+    @SerializedName("content")
+    var content : String
+        ) : Parcelable

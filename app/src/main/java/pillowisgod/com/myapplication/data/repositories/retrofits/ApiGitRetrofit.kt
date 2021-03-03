@@ -1,5 +1,6 @@
 package pillowisgod.com.myapplication.data.repositories.retrofits
 
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttp
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -13,6 +14,7 @@ object ApiGitRetrofit {
             .addInterceptor(HttpLoggingInterceptor())
             .build()
     }
+
     private val retrofit by lazy {
         Retrofit.Builder()
             .baseUrl("https://api.github.com/")

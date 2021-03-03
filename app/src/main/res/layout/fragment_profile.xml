@@ -13,6 +13,7 @@
         android:layout_width="156dp"
         android:layout_height="156dp"
         android:layout_marginTop="16dp"
+        android:clickable="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -36,48 +37,65 @@
         android:layout_width="130dp"
         android:layout_height="130dp"
         android:layout_marginStart="24dp"
-        android:layout_marginEnd="72dp"
-        android:layout_marginBottom="72dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="64dp"
         android:clickable="true"
+        android:scaleType="center"
         android:src="@drawable/ic_baseline_settings_24"
+        app:fabCustomSize="130dp"
+        app:fabSize="auto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/fbLogOut" />
+        app:layout_constraintStart_toEndOf="@+id/fbLogOut"
+        app:maxImageSize="64dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fbLogOut"
         android:layout_width="130dp"
         android:layout_height="130dp"
-        android:layout_marginStart="72dp"
-        android:layout_marginBottom="72dp"
-        android:scaleType="center"
+        android:layout_marginStart="64dp"
+        android:layout_marginBottom="64dp"
         android:clickable="true"
+        android:cropToPadding="false"
+        android:scaleType="center"
         android:src="@drawable/ic_baseline_arrow_back_24"
+        app:fabCustomSize="130dp"
+        app:fabSize="auto"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:maxImageSize="64dp"
+        app:useCompatPadding="false" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fbListGists"
         android:layout_width="130dp"
         android:layout_height="130dp"
         android:layout_marginStart="24dp"
-        android:layout_marginEnd="72dp"
+        android:layout_marginEnd="64dp"
         android:layout_marginBottom="24dp"
         android:clickable="true"
+        android:scaleType="center"
         android:src="@drawable/ic_baseline_list_24"
+        app:fabCustomSize="130dp"
+        app:fabSize="auto"
         app:layout_constraintBottom_toTopOf="@+id/fbSettings"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/fbSetMasterPass" />
+        app:layout_constraintStart_toEndOf="@+id/fbSetMasterPass"
+        app:maxImageSize="64dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fbSetMasterPass"
         android:layout_width="130dp"
         android:layout_height="130dp"
-        android:layout_marginStart="72dp"
+        android:layout_marginStart="64dp"
         android:layout_marginBottom="24dp"
         android:clickable="true"
+        android:scaleType="center"
         android:src="@drawable/ic_baseline_lock_24"
+        app:fabCustomSize="130dp"
+        app:fabSize="auto"
         app:layout_constraintBottom_toTopOf="@+id/fbLogOut"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:maxImageSize="64dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
