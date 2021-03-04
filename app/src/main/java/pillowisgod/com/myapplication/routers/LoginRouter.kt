@@ -4,7 +4,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import pillowisgod.com.myapplication.R
-import pillowisgod.com.myapplication.data.repositories.model.SuccessfulResponseModel
+import pillowisgod.com.myapplication.data.repositories.model.loginmodels.SuccessfulResponseModel
 import pillowisgod.com.myapplication.helpers.Constants.MODEL_KEY
 
 interface LoginRoutingLogic {

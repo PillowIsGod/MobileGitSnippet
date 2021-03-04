@@ -1,11 +1,9 @@
 package pillowisgod.com.myapplication.fragments
 
-import android.content.res.Resources
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.webkit.CookieManager
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -14,7 +12,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pillowisgod.com.myapplication.R
-import pillowisgod.com.myapplication.data.repositories.model.SuccessfulResponseModel
+import pillowisgod.com.myapplication.data.repositories.model.loginmodels.SuccessfulResponseModel
 import pillowisgod.com.myapplication.helpers.Constants.MODEL_KEY
 import pillowisgod.com.myapplication.routers.ProfileRouter
 

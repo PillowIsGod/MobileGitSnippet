@@ -1,13 +1,10 @@
 package pillowisgod.com.myapplication.viewmodels.models
 
-import android.content.Context
 import android.util.Log
-import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
-import pillowisgod.com.myapplication.data.repositories.model.FilesRemoteModel
-import pillowisgod.com.myapplication.data.repositories.model.GistFilesModel
-import pillowisgod.com.myapplication.data.repositories.model.GistResponseModel
+import pillowisgod.com.myapplication.data.repositories.model.FilesPostModel
+import pillowisgod.com.myapplication.data.repositories.model.getmodels.GistFilesModel
+import pillowisgod.com.myapplication.data.repositories.model.getmodels.GistResponseModel
 import pillowisgod.com.myapplication.data.repositories.retrofits.ApiGitRetrofit
 import pillowisgod.com.myapplication.helpers.Constants
 
@@ -41,15 +38,23 @@ class GistViewModel : ViewModel() {
         }
         return body!!
     }
-    suspend fun editGist(url: String, description : String, files : FilesRemoteModel) : Boolean {
+    suspend fun editGist(url: String, files : FilesPostModel) : Boolean {
         var bool = false
         val code = url.substringAfterLast("/")
         val response = ApiGitRetrofit.api.editGist(token = "Bearer ${Constants.accessToken?.accessToken}",
-            gistID = code,
-        desc = description,
-            files = files)
+            gistID = code, files= files)
         Log.e("TAG", "This is edit -> $response")
         if(response.isSuccessful) {
+            bool = true
+        }
+        return bool
+    }
+
+    suspend fun postGist(files : FilesPostModel) : Boolean {
+        var bool = false
+        val response = ApiGitRetrofit.api.postGist(token = "Bearer ${Constants.accessToken?.accessToken}",files = files)
+        Log.e("TAG", "This is post request -> $response")
+        if (response.isSuccessful) {
             bool = true
         }
         return bool

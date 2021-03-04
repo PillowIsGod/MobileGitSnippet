@@ -1,6 +1,6 @@
 package pillowisgod.com.myapplication.helpers
 
-import pillowisgod.com.myapplication.data.repositories.model.AccessToken
+import pillowisgod.com.myapplication.data.repositories.model.loginmodels.AccessToken
 
 object Constants {
     const val GIT_LOGIN_CALL = "https://github.com/login/oauth/authorize"

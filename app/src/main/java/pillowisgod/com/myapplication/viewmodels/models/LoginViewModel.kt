@@ -3,16 +3,9 @@ package pillowisgod.com.myapplication.viewmodels.models
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import io.reactivex.disposables.CompositeDisposable
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import pillowisgod.com.myapplication.data.repositories.model.AccessToken
-import pillowisgod.com.myapplication.data.repositories.model.SuccessfulResponseModel
+import pillowisgod.com.myapplication.data.repositories.model.loginmodels.AccessToken
+import pillowisgod.com.myapplication.data.repositories.model.loginmodels.SuccessfulResponseModel
 import pillowisgod.com.myapplication.data.repositories.retrofits.ApiGitRetrofit
 import pillowisgod.com.myapplication.data.repositories.retrofits.LoginRetrofitInstance
 import pillowisgod.com.myapplication.helpers.Constants
@@ -46,7 +39,7 @@ class LoginViewModel : ViewModel() {
         var accessToken : AccessToken? = null
             val response = LoginRetrofitInstance.api.getAccessToken(CLIENT_ID,
                 Constants.CLIENT_SECRET, code!!)
-//            Log.e("TAG", "This is the coroutine response -> $response")
+            Log.e("TAG", "This is the coroutine response -> $response")
            if (response.isSuccessful) {
                 accessToken = response.body()!!
 //                Log.e("TAG", "Success response -> $accessToken")

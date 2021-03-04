@@ -7,8 +7,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import pillowisgod.com.myapplication.R
-import pillowisgod.com.myapplication.data.repositories.model.GistFilesModel
-import pillowisgod.com.myapplication.data.repositories.model.GistResponseModel
+import pillowisgod.com.myapplication.data.repositories.model.getmodels.GistResponseModel
 import pillowisgod.com.myapplication.routers.GistListRouter
 
 class GistListAdapter(private val fragment: Fragment) : RecyclerView.Adapter<GistListAdapter.GistListViewHolder>() {
@@ -45,8 +44,12 @@ class GistListAdapter(private val fragment: Fragment) : RecyclerView.Adapter<Gis
         private val tvDate = itemView.findViewById<TextView>(R.id.tvDate)
 
         fun bind(modelGist: GistResponseModel) {
+            var string : String = modelGist.description
+            if(modelGist.description.count()>40) {
+                string = "${modelGist.description.substring(0, 40)}..."
+            }
             tvDate.text = modelGist.date
-            tvFileName.text = modelGist.description
+            tvFileName.text = string
         }
 
     }

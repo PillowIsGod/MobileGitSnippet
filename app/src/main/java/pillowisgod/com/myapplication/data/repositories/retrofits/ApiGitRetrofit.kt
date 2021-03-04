@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object ApiGitRetrofit {
     private val okHttpClient by lazy {
         OkHttpClient.Builder()
-            .addInterceptor(HttpLoggingInterceptor())
+            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()
     }
 

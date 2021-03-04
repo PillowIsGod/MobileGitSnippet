@@ -1,16 +1,13 @@
 package pillowisgod.com.myapplication.viewmodels.adapters
 
 import com.google.gson.TypeAdapter
-import com.google.gson.annotations.SerializedName
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
-import pillowisgod.com.myapplication.data.repositories.model.FilesRemoteModel
-import pillowisgod.com.myapplication.data.repositories.model.GistResponseModel
-import pillowisgod.com.myapplication.data.repositories.model.GistsModel
+import pillowisgod.com.myapplication.data.repositories.model.getmodels.FilesRemoteModel
+import pillowisgod.com.myapplication.data.repositories.model.getmodels.GistsModel
 
 class CustomGsonAdapter : TypeAdapter<FilesRemoteModel>() {
-    override fun write(out: JsonWriter?, value: FilesRemoteModel?) {
-        TODO("Not yet implemented")
+    override fun write(writer: JsonWriter?, gist: FilesRemoteModel?) {
     }
 
     override fun read(reader: JsonReader?): FilesRemoteModel {

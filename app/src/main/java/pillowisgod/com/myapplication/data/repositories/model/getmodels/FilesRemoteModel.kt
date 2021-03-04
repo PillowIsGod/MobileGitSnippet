@@ -1,10 +1,10 @@
-package pillowisgod.com.myapplication.data.repositories.model
+package pillowisgod.com.myapplication.data.repositories.model.getmodels
 
 import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.JsonAdapter
-import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
+import pillowisgod.com.myapplication.data.repositories.model.getmodels.GistsModel
 import pillowisgod.com.myapplication.viewmodels.adapters.CustomGsonAdapter
 
 @Parcelize

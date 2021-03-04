@@ -4,8 +4,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import pillowisgod.com.myapplication.R
-import pillowisgod.com.myapplication.data.repositories.model.GistFilesModel
-import pillowisgod.com.myapplication.data.repositories.model.GistResponseModel
+import pillowisgod.com.myapplication.data.repositories.model.getmodels.GistResponseModel
 import pillowisgod.com.myapplication.helpers.Constants
 
 interface ProfileRouterLogic {

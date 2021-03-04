@@ -1,4 +1,4 @@
-package pillowisgod.com.myapplication.data.repositories.model
+package pillowisgod.com.myapplication.data.repositories.model.getmodels
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
