@@ -5,7 +5,8 @@
     android:id="@+id/tvLogin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.ProfileFragment">
+    tools:context=".fragments.ProfileFragment"
+    android:background="@color/blue_primary">
 
 
     <ImageView
@@ -47,7 +48,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/fbLogOut"
-        app:maxImageSize="64dp" />
+        app:maxImageSize="56dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fbLogOut"
@@ -63,7 +64,7 @@
         app:fabSize="auto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:maxImageSize="64dp"
+        app:maxImageSize="56dp"
         app:useCompatPadding="false" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -81,7 +82,7 @@
         app:layout_constraintBottom_toTopOf="@+id/fbSettings"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/fbSetMasterPass"
-        app:maxImageSize="64dp" />
+        app:maxImageSize="56dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fbSetMasterPass"
@@ -96,6 +97,6 @@
         app:fabSize="auto"
         app:layout_constraintBottom_toTopOf="@+id/fbLogOut"
         app:layout_constraintStart_toStartOf="parent"
-        app:maxImageSize="64dp" />
+        app:maxImageSize="56dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:visibility="visible"
-    tools:context=".fragments.LoginFragment">
+    tools:context=".fragments.LoginFragment"
+    android:background="@color/blue_primary_variant">
 
     <WebView
         android:id="@+id/wvLogin"
@@ -16,7 +17,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
