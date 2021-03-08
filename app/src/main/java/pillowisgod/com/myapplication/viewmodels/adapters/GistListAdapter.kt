@@ -48,7 +48,7 @@ class GistListAdapter(private val fragment: Fragment) : RecyclerView.Adapter<Gis
             if(modelGist.description.count()>40) {
                 string = "${modelGist.description.substring(0, 40)}..."
             }
-            tvDate.text = modelGist.date
+            tvDate.text = modelGist.date.substringBeforeLast("T")
             tvFileName.text = string
         }
 

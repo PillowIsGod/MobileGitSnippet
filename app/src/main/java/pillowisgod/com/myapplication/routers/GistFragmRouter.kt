@@ -6,6 +6,7 @@ import androidx.navigation.fragment.findNavController
 import pillowisgod.com.myapplication.R
 import pillowisgod.com.myapplication.data.repositories.model.getmodels.GistResponseModel
 import pillowisgod.com.myapplication.helpers.Constants
+import pillowisgod.com.myapplication.helpers.Constants.STRING_KEY
 
 interface GistRouterLogic {
     fun routeToList(gistFilesModel: List<GistResponseModel>)
@@ -25,5 +26,17 @@ class GistFragmRouter(private val fragment : Fragment) : GistRouterLogic {
         fragment
             .findNavController()
             .navigate(R.id.action_gistAdd_toList, bundle)
+    }
+    fun routeToPassCheck(string : String) {
+        val bundle = bundleOf(STRING_KEY to string)
+        fragment
+            .findNavController()
+            .navigate(R.id.action_gistFragm_toCheck, bundle)
+    }
+    fun routeToPassCheckFromAdd(string : String) {
+        val bundle = bundleOf(STRING_KEY to string)
+        fragment
+            .findNavController()
+            .navigate(R.id.action_gistaddFragm_toCheck, bundle)
     }
 }

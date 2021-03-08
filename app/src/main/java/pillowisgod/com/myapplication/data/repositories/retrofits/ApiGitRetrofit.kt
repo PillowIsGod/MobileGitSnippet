@@ -14,7 +14,6 @@ object ApiGitRetrofit {
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()
     }
-
     private val retrofit by lazy {
         Retrofit.Builder()
             .baseUrl("https://api.github.com/")

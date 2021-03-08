@@ -12,5 +12,9 @@ object Constants {
     const val MODEL_KEY = "ModelKey18asd3377"
     const val GIST_LIST_MODEL_KEY = "GistListModelKey1834134123412"
     const val SINGLE_GIST_MODEL_KEY = "SingleGistModelKey1099u985818593"
+    const val CHECK_FRAGM_KEY = "Checksonasd1q23129312931"
+    const val STRING_KEY = "STRINGasdaskkEyasdazz111"
+    const val Gist_String = "GistFragment"
+    const val Gist_Add_String = "GistAddFragment"
     var accessToken: AccessToken? = null
 }

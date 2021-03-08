@@ -2,6 +2,7 @@ package pillowisgod.com.myapplication.fragments
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,10 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_gist.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import pillowisgod.com.myapplication.R
 import pillowisgod.com.myapplication.data.repositories.model.FilesInnerModel
 import pillowisgod.com.myapplication.data.repositories.model.FilesObj
@@ -21,9 +19,11 @@ import pillowisgod.com.myapplication.data.repositories.model.FilesPostModel
 import pillowisgod.com.myapplication.data.repositories.model.getmodels.GistFilesModel
 import pillowisgod.com.myapplication.data.repositories.model.getmodels.GistResponseModel
 import pillowisgod.com.myapplication.helpers.Constants
+import pillowisgod.com.myapplication.helpers.Constants.Gist_String
 import pillowisgod.com.myapplication.routers.GistFragmRouter
 import pillowisgod.com.myapplication.viewmodels.factories.GistViewModelFactory
 import pillowisgod.com.myapplication.viewmodels.models.GistViewModel
+import java.lang.Exception
 
 
 class GistFragment : Fragment(R.layout.fragment_gist) {
@@ -32,6 +32,7 @@ class GistFragment : Fragment(R.layout.fragment_gist) {
     private lateinit var viewModel: GistViewModel
     private lateinit var gistModel: GistFilesModel
     private lateinit var router: GistFragmRouter
+    private var flag = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +42,8 @@ class GistFragment : Fragment(R.layout.fragment_gist) {
 
 
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -53,20 +56,63 @@ class GistFragment : Fragment(R.layout.fragment_gist) {
             }
         }
         fbDeleteGist.setOnClickListener {
-            alertDialogDelete()
+            if (checkIfPassIsSet()) {
+
+                router.routeToPassCheck(Gist_String)
+
+                flag = requireArguments().get(Constants.CHECK_FRAGM_KEY) as Boolean
+
+
+                if (flag == true) {
+                    alertDialogDelete()
+
+                }
+            }
+
+
+
+
+//            } else {
+//                alertDialogDelete()
+//            }
         }
+
+
+
         fbEditGist.setOnClickListener {
             setEditingForm()
         }
+
         fbConfirmAdding.setOnClickListener {
-            editGist(gistModel)
-            hideEditingForm()
+            if (checkIfPassIsSet()) {
+                router.routeToPassCheck(Gist_String)
+                if (flag == true) {
+                    editGist(gistModel)
+                    hideEditingForm()
+                }
+            }
+            else {
+                editGist(gistModel)
+                hideEditingForm()
+            }
         }
         fbDeclineAdding.setOnClickListener {
             hideEditingForm()
         }
-
+        fbShareGist.setOnClickListener {
+            if(checkIfPassIsSet()) {
+                router.routeToPassCheck(Gist_String)
+                flag = requireArguments().get(Constants.CHECK_FRAGM_KEY) as Boolean
+                if (flag == true) {
+                    intentMessageTelegram(gistModel.files.filename.content)
+                }
+            }
+            else {
+                intentMessageTelegram(gistModel.files.filename.content)
+            }
+        }
     }
+
 
     private fun initViews(modelGist: GistFilesModel) {
         etGistName.setText(modelGist.files.filename.gistName, TextView.BufferType.EDITABLE)
@@ -156,4 +202,24 @@ class GistFragment : Fragment(R.layout.fragment_gist) {
 
     }
 
+    fun intentMessageTelegram(msg: String?) {
+        val appName = "org.telegram.messenger"
+        try {
+            val myIntent = Intent(Intent.ACTION_SEND)
+            myIntent.type = "text/plain"
+            myIntent.setPackage(appName)
+            myIntent.putExtra(Intent.EXTRA_TEXT, msg) //
+            context?.startActivity(Intent.createChooser(myIntent, "Share with"))
+        } catch (e: Exception) {
+            Toast.makeText(context, R.string.telegram_not_found, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun checkIfPassIsSet(): Boolean {
+        var bool = false
+            if (viewModel.checkIfPasswordIsSet(requireContext())) {
+                bool = true
+            }
+        return bool
+    }
 }

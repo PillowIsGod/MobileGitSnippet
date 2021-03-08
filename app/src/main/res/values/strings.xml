@@ -8,4 +8,10 @@
     <string name="successful_edit">You\'ve successfully edited current gist!</string>
     <string name="success_delete">You\'ve successfully deleted current gist!</string>
     <string name="not_enough_params">Please, fill in all fields!</string>
+    <string name="telegram_not_found">Telegram is not installed on your device</string>
+    <string name="require_to_create_master_pass">Please, set master pass for security purpose!</string>
+    <string name="ok">OK</string>
+    <string name="back">Back</string>
+    <string name="success_password_set">You\'ve successfully set master-password!</string>
+    <string name="check_master_password">Please, enter your master password</string>
 </resources>

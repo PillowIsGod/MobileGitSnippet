@@ -11,7 +11,6 @@ import retrofit2.http.*
 
 interface LoginCall {
 
-    //    @Headers("Authorization: Bearer 3e881a613c709a45cd244e090b5aae56075f3e81")
     @GET("user")
     suspend fun getLoginCall(@Header("Authorization") token: String): Response<SuccessfulResponseModel>
 
@@ -38,10 +37,8 @@ interface LoginCall {
         @Body files: FilesPostModel
     ): Response<GistFilesModel>
 
-    //    @Field("files") files : FilesRemoteModel
 
     @POST("gists")
-//    @FormUrlEncoded
     suspend fun postGist(
         @Header("Authorization") token: String,
         @Body files : FilesPostModel

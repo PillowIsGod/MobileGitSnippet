@@ -33,6 +33,8 @@
             app:destination="@+id/listFragment"/>
         <action android:id="@+id/action_profileFragment_toLoginFragm"
             app:destination="@+id/loginFragment"/>
+        <action android:id="@+id/action_profileFragment_toMasterPass"
+            app:destination="@id/masterpassDialog"/>
     </fragment>
         <fragment
             android:id="@+id/listFragment"
@@ -60,6 +62,9 @@
             app:destination="@+id/listFragment"
             app:popUpTo="@id/gistFragment"
             app:popUpToInclusive="true"/>
+        <action android:id="@+id/action_gistFragm_toCheck"
+            app:destination="@+id/checkPassDialog"
+            />
     </fragment>
     <fragment
         android:id="@+id/gistAddFragment"
@@ -70,5 +75,29 @@
             app:destination="@+id/listFragment"
             app:popUpTo="@id/gistAddFragment"
             app:popUpToInclusive="true"/>
+        <action android:id="@+id/action_gistaddFragm_toCheck"
+            app:destination="@+id/checkPassDialog"
+            app:popUpTo="@id/gistAddFragment"
+            app:popUpToInclusive="true"
+            />
+
     </fragment>
+    <dialog
+        android:id="@+id/masterpassDialog"
+        android:name="pillowisgod.com.myapplication.fragments.MasterPassDialogFragment"
+        android:label="master_pass"
+        tools:layout="@layout/fragment_master_pass_dialog">
+        <action android:id="@+id/action_dialog_to_profile"
+            app:destination="@+id/profileFragment"/>
+    </dialog>
+    <dialog
+        android:id="@+id/checkPassDialog"
+        android:name="pillowisgod.com.myapplication.fragments.PassCheckFragment"
+        android:label="pass_check"
+        tools:layout="@layout/fragment_pass_check">
+        <action android:id="@+id/action_check_to_gist_fragment"
+            app:popUpTo="@id/gistFragment"/>
+        <action android:id="@+id/action_check_to_add_gist_fragm"
+            app:popUpTo="@+id/gistAddFragment"/>
+    </dialog>
 </navigation>

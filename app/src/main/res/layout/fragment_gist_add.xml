@@ -25,7 +25,8 @@
         android:textColor="#171515"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etGistName" />
+        app:layout_constraintTop_toBottomOf="@+id/etGistName"
+        android:background="@color/white"/>
 
     <EditText
         android:id="@+id/etGistName"
@@ -42,7 +43,8 @@
         android:textColor="#171515"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/white"/>
 
     <EditText
         android:id="@+id/etGistDesc"
@@ -62,7 +64,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etGistContent" />
+        app:layout_constraintTop_toBottomOf="@+id/etGistContent"
+        android:background="@color/white"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fbDeclineAdding"

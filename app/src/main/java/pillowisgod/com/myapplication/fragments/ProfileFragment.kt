@@ -46,7 +46,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         fbListGists.setOnClickListener {
             moveToList()
         }
-//        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        fbSetMasterPass.setOnClickListener {
+            router.routeToMasterPass(model)
+        }
     }
 
     private fun moveToList() {

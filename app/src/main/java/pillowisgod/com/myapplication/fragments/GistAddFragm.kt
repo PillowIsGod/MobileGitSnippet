@@ -1,6 +1,7 @@
 package pillowisgod.com.myapplication.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
@@ -18,21 +19,36 @@ import pillowisgod.com.myapplication.R
 import pillowisgod.com.myapplication.data.repositories.model.FilesInnerModel
 import pillowisgod.com.myapplication.data.repositories.model.FilesObj
 import pillowisgod.com.myapplication.data.repositories.model.FilesPostModel
+import pillowisgod.com.myapplication.helpers.Constants
+import pillowisgod.com.myapplication.helpers.Constants.STRING_KEY
 import pillowisgod.com.myapplication.routers.GistFragmRouter
 import pillowisgod.com.myapplication.viewmodels.factories.GistViewModelFactory
 import pillowisgod.com.myapplication.viewmodels.models.GistViewModel
+import java.lang.Exception
 
 
 class GistAddFragm : Fragment(R.layout.fragment_gist_add) {
 
     private lateinit var viewModel: GistViewModel
     private lateinit var router: GistFragmRouter
+    private var flag = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val gistViewModelFactory = GistViewModelFactory()
         viewModel = ViewModelProvider(this, gistViewModelFactory).get(GistViewModel::class.java)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        try {
+            flag = requireArguments().get(Constants.CHECK_FRAGM_KEY) as Boolean
+        }
+        catch(e: Exception) {
+            Log.e("TAG", "Bool wasn't initialized yet -> ${e.localizedMessage}")
+        }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

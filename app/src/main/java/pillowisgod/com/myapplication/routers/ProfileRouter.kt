@@ -5,12 +5,14 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import pillowisgod.com.myapplication.R
 import pillowisgod.com.myapplication.data.repositories.model.getmodels.GistResponseModel
+import pillowisgod.com.myapplication.data.repositories.model.loginmodels.SuccessfulResponseModel
 import pillowisgod.com.myapplication.helpers.Constants
+import pillowisgod.com.myapplication.helpers.Constants.MODEL_KEY
 
 interface ProfileRouterLogic {
     fun routeToLogin()
     fun routeToList(gistFilesModel: List<GistResponseModel>)
-    fun routeToMasterPass()
+    fun routeToMasterPass(successfulResponseModel: SuccessfulResponseModel)
     fun routeToSettings()
 }
 
@@ -29,8 +31,11 @@ class ProfileRouter(private val fragment : Fragment) : ProfileRouterLogic {
             .navigate(R.id.action_profileFragment_toList, bundle)
     }
 
-    override fun routeToMasterPass() {
-        TODO("Not yet implemented")
+    override fun routeToMasterPass(successfulResponseModel: SuccessfulResponseModel) {
+        val bundle = bundleOf(MODEL_KEY to successfulResponseModel)
+        fragment
+            .findNavController()
+            .navigate(R.id.action_profileFragment_toMasterPass, bundle)
     }
 
     override fun routeToSettings() {
