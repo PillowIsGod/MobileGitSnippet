@@ -68,13 +68,9 @@ class GistFragment : Fragment(R.layout.fragment_gist) {
 
                 }
             }
-
-
-
-
-//            } else {
-//                alertDialogDelete()
-//            }
+             else {
+                alertDialogDelete()
+            }
         }
 
 
@@ -217,9 +213,13 @@ class GistFragment : Fragment(R.layout.fragment_gist) {
 
     fun checkIfPassIsSet(): Boolean {
         var bool = false
+        GlobalScope.launch {
             if (viewModel.checkIfPasswordIsSet(requireContext())) {
                 bool = true
             }
+        }
         return bool
+
+
     }
 }
