@@ -9,7 +9,7 @@ import pillowisgod.com.myapplication.R
 import pillowisgod.com.myapplication.data.repositories.model.getmodels.GistResponseModel
 import pillowisgod.com.myapplication.helpers.Constants
 import pillowisgod.com.myapplication.routers.GistListRouter
-import pillowisgod.com.myapplication.viewmodels.adapters.GistListAdapter
+import pillowisgod.com.myapplication.adapters.GistListAdapter
 
 
 class ListFragment : Fragment(R.layout.fragment_list) {

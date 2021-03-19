@@ -78,7 +78,7 @@ class GistAddFragm : Fragment(R.layout.fragment_gist_add) {
                 )
             )
             GlobalScope.launch {
-                val bool = viewModel.postGist(files = model!!)
+                val bool = viewModel.postGist(model)
                 withContext(Dispatchers.Main) {
                     if (bool) {
                         Toast.makeText(context, R.string.success_add, Toast.LENGTH_SHORT).show()

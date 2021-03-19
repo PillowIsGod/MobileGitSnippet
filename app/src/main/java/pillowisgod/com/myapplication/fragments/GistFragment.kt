@@ -9,7 +9,9 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import kotlinx.android.synthetic.main.fragment_gist.*
 import kotlinx.coroutines.*
 import pillowisgod.com.myapplication.R
@@ -28,120 +30,94 @@ import java.lang.Exception
 
 class GistFragment : Fragment(R.layout.fragment_gist) {
 
-    private lateinit var gistModelGist: GistResponseModel
     private lateinit var viewModel: GistViewModel
-    private lateinit var gistModel: GistFilesModel
     private lateinit var router: GistFragmRouter
     private var flag = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        gistModelGist = requireArguments().get(Constants.SINGLE_GIST_MODEL_KEY) as GistResponseModel
         val gistViewModelFactory = GistViewModelFactory()
         viewModel = ViewModelProvider(this, gistViewModelFactory).get(GistViewModel::class.java)
-
-
+        viewModel.postGistValue(requireArguments().get(Constants.SINGLE_GIST_MODEL_KEY) as GistResponseModel)
     }
-
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         router = GistFragmRouter(fragment = this)
-        GlobalScope.launch {
-            gistModel = viewModel.getGistData(gistModelGist.url)
-            Log.e("TAG", "This is success -> $gistModel")
+        lifecycleScope.launch {
             withContext(Dispatchers.Main) {
-                initViews(gistModel)
+                initViews()
             }
-        }
-        fbDeleteGist.setOnClickListener {
-            if (checkIfPassIsSet()) {
 
-                router.routeToPassCheck(Gist_String)
-
-                flag = requireArguments().get(Constants.CHECK_FRAGM_KEY) as Boolean
-
-
-                if (flag == true) {
-                    alertDialogDelete()
-
-                }
+            fbDeleteGist.setOnClickListener {
+//                checkIfPassIsSet()
+//                    router.routeToPassCheck(Gist_String)
+//
+//                    flag = requireArguments().get(Constants.CHECK_FRAGM_KEY) as Boolean
+//
+//
+//                    if (flag == true) {
+                        alertDialogDelete()
+//
+//                    }
             }
-             else {
-                alertDialogDelete()
+
+
+            fbEditGist.setOnClickListener {
+                setEditingForm()
             }
-        }
 
-
-
-        fbEditGist.setOnClickListener {
-            setEditingForm()
-        }
-
-        fbConfirmAdding.setOnClickListener {
-            if (checkIfPassIsSet()) {
-                router.routeToPassCheck(Gist_String)
-                if (flag == true) {
-                    editGist(gistModel)
-                    hideEditingForm()
-                }
-            }
-            else {
-                editGist(gistModel)
+            fbConfirmAdding.setOnClickListener {
+                editGist()
                 hideEditingForm()
             }
-        }
-        fbDeclineAdding.setOnClickListener {
-            hideEditingForm()
-        }
-        fbShareGist.setOnClickListener {
-            if(checkIfPassIsSet()) {
-                router.routeToPassCheck(Gist_String)
-                flag = requireArguments().get(Constants.CHECK_FRAGM_KEY) as Boolean
-                if (flag == true) {
-                    intentMessageTelegram(gistModel.files.filename.content)
-                }
+            fbDeclineAdding.setOnClickListener {
+                hideEditingForm()
             }
-            else {
-                intentMessageTelegram(gistModel.files.filename.content)
+            fbShareGist.setOnClickListener {
+//                checkIfPassIsSet()
+//                    flag = requireArguments().get(Constants.CHECK_FRAGM_KEY) as Boolean
+//                    if (flag == true) {
+                        intentMessageTelegram(viewModel.gistFilesModel.value?.files?.filename?.content)
+//                    }
             }
         }
     }
 
 
-    private fun initViews(modelGist: GistFilesModel) {
-        etGistName.setText(modelGist.files.filename.gistName, TextView.BufferType.EDITABLE)
-        etGistContent.setText(modelGist.files.filename.content, TextView.BufferType.EDITABLE)
-        etGistDesc.setText(modelGist.description, TextView.BufferType.EDITABLE)
+    private fun initViews() {
+        viewModel.gistFilesModel.observe(viewLifecycleOwner, { gistModel ->
+            etGistName.setText(gistModel.files.filename.gistName, TextView.BufferType.EDITABLE)
+            etGistContent.setText(gistModel.files.filename.content, TextView.BufferType.EDITABLE)
+            etGistDesc.setText(gistModel.description, TextView.BufferType.EDITABLE)
+        })
     }
 
     private fun deleteGist() {
         GlobalScope.launch {
-            val bool = viewModel.deleteGist(gistModelGist.url)
+            val bool = viewModel.deleteGist()
             successfulRouteFun(bool, R.string.success_delete)
 
         }
     }
 
-    private fun editGist(modelGist: GistFilesModel) {
-
+    private fun editGist() {
         if (etGistContent.text.isNotEmpty() && etGistName.text.isNotEmpty() && etGistDesc.text.isNotEmpty()) {
-            GlobalScope.launch {
-                val filesModel = FilesPostModel(
-                    description = etGistDesc.text.toString(),
-                    files = FilesObj(
-                        filerandomname = FilesInnerModel(
-                            content = etGistContent.text.toString(),
-                            filename = etGistName.text.toString()
-                        )
+            val filesModel = FilesPostModel(
+                description = etGistDesc.text.toString(),
+                files = FilesObj(
+                    filerandomname = FilesInnerModel(
+                        content = etGistContent.text.toString(),
+                        filename = etGistName.text.toString()
                     )
                 )
-                val bool = viewModel.editGist(
-                    url = gistModelGist.url,
-                    files = filesModel
-                )
-                successfulRouteFun(bool, R.string.successful_edit)
+            )
+            lifecycleScope.launch {
+                val bool = viewModel.editGist(filesModel)
+                withContext(Dispatchers.Main) {
+                    successfulRouteFun(bool, R.string.successful_edit)
+                }
             }
         } else {
             Toast.makeText(context, R.string.not_enough_params, Toast.LENGTH_SHORT).show()
@@ -153,7 +129,7 @@ class GistFragment : Fragment(R.layout.fragment_gist) {
 
     private fun successfulRouteFun(checkBoolean: Boolean, message: Int) {
         if (checkBoolean)
-            GlobalScope.launch {
+            lifecycleScope.launch {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                     val bundle = viewModel.getGistsList()
@@ -211,15 +187,22 @@ class GistFragment : Fragment(R.layout.fragment_gist) {
         }
     }
 
-    fun checkIfPassIsSet(): Boolean {
-        var bool = false
-        GlobalScope.launch {
-            if (viewModel.checkIfPasswordIsSet(requireContext())) {
-                bool = true
+    fun checkIfPassIsSet() {
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                if (viewModel.checkIfPasswordIsSet(requireContext())) {
+                    withContext(Dispatchers.Main) {
+                        router.routeToPassCheck(Gist_String)
+//                        flag = requireArguments().get(Constants.CHECK_FRAGM_KEY) as Boolean
+//                        if (flag == true) {
+//                            alertDialogDelete()
+//                        }
+//                        else {
+//                            alertDialogDelete()
+//                        }
+                    }
+                }
             }
         }
-        return bool
-
-
     }
 }

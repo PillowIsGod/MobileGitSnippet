@@ -1,4 +1,4 @@
-package pillowisgod.com.myapplication.viewmodels.adapters
+package pillowisgod.com.myapplication.adapters
 
 import android.view.LayoutInflater
 import android.view.View
