@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.webkit.CookieManager
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.coroutines.Dispatchers
@@ -24,21 +25,19 @@ import pillowisgod.com.myapplication.viewmodels.models.ProfileViewModel
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private lateinit var viewModel : ProfileViewModel
-    private lateinit var model : SuccessfulResponseModel
     private lateinit var router: ProfileRouter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        model = requireArguments().get(MODEL_KEY) as SuccessfulResponseModel
         val profileViewModelFactory = ProfileViewModelFactory()
         viewModel = ViewModelProvider(this, profileViewModelFactory).get(ProfileViewModel::class.java)
-
+        viewModel.setModel(requireArguments().get(MODEL_KEY) as SuccessfulResponseModel)
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViews(model)
+
+        initViews(viewModel.responseModel.value!!)
         router = ProfileRouter(fragment = this)
         fbLogOut.setOnClickListener {
            logOut()
@@ -47,12 +46,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             moveToList()
         }
         fbSetMasterPass.setOnClickListener {
-            router.routeToMasterPass(model)
+            router.routeToMasterPass(viewModel.responseModel.value!!)
         }
     }
 
     private fun moveToList() {
-        GlobalScope.launch {
+        lifecycleScope.launch {
             withContext(Dispatchers.IO) {
                 val gists = viewModel.getGistsList()
                 router.routeToList(gists)

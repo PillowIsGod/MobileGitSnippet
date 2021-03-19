@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.webkit.*
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.coroutines.*
 import pillowisgod.com.myapplication.R
@@ -64,7 +65,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
-                GlobalScope.launch {
+                lifecycleScope.launch {
                     val uri = Uri.parse(url)
                     if (uri != null && uri.toString().startsWith(CALLBACK_URL)) {
                         val response = viewModel.logToAcc(uri)
@@ -77,9 +78,5 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
         wvLogin.loadUrl(LOGIN_URL)
     }
-
-
-
-
 
 }
