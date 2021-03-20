@@ -3,10 +3,14 @@ package pillowisgod.com.myapplication.data.repositories
 import pillowisgod.com.myapplication.data.repositories.model.FilesPostModel
 import pillowisgod.com.myapplication.data.repositories.model.getmodels.GistFilesModel
 import pillowisgod.com.myapplication.data.repositories.model.getmodels.GistResponseModel
+import pillowisgod.com.myapplication.data.repositories.model.loginmodels.SuccessfulResponseModel
 import retrofit2.Response
 import retrofit2.http.*
 
 interface GistCalls {
+    @GET("user")
+    suspend fun getLoginCall(@Header("Authorization") token: String): SuccessfulResponseModel
+
     @GET("gists")
     suspend fun getGistsList(@Header("Authorization") token: String): Response<List<GistResponseModel>>
 

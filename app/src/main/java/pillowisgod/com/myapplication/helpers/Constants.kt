@@ -4,7 +4,8 @@ import pillowisgod.com.myapplication.data.repositories.model.loginmodels.AccessT
 
 object Constants {
     const val GIT_LOGIN_CALL = "https://github.com/login/oauth/authorize"
-    const val BASE_URL = "https://github.com/login/oauth"
+    const val BASE_URL = "https://github.com/"
+    const val BASE_API_URL = "https://api.github.com/"
     const val CLIENT_ID = "1fc241458a24f34b16c2"
     const val CLIENT_SECRET = "de95b8959d7fd07faf8e9a84813bef3e3efe9c59"
     const val CALLBACK_URL = "mobilegitschema://mobilegitsnippet.com"

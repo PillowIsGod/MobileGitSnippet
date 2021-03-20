@@ -17,6 +17,7 @@ import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_gist.*
 import kotlinx.coroutines.*
 import pillowisgod.com.myapplication.R
+import pillowisgod.com.myapplication.data.repositories.GistCalls
 import pillowisgod.com.myapplication.data.repositories.model.FilesInnerModel
 import pillowisgod.com.myapplication.data.repositories.model.FilesObj
 import pillowisgod.com.myapplication.data.repositories.model.FilesPostModel
@@ -40,13 +41,16 @@ class GistFragment : Fragment(R.layout.fragment_gist) {
 
     @Inject
     lateinit var passwordDao: PasswordDao
+    @Inject
+    lateinit var gistCalls : GistCalls
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
         val gistViewModelFactory = GistViewModelFactory()
         viewModel = ViewModelProvider(this, gistViewModelFactory).get(GistViewModel::class.java)
-        viewModel.postGistValue(requireArguments().get(Constants.SINGLE_GIST_MODEL_KEY) as GistResponseModel)
+        viewModel.postGistValue(api = gistCalls,
+            gistModel = requireArguments().get(Constants.SINGLE_GIST_MODEL_KEY) as GistResponseModel)
     }
 
 
@@ -59,14 +63,14 @@ class GistFragment : Fragment(R.layout.fragment_gist) {
             }
 
             fbDeleteGist.setOnClickListener {
-                checkIfPassIsSet()
+//                checkIfPassIsSet()
 //                    router.routeToPassCheck(Gist_String)
 //
 //                    flag = requireArguments().get(Constants.CHECK_FRAGM_KEY) as Boolean
 //
 //
 //                    if (flag == true) {
-//                alertDialogDelete()
+                alertDialogDelete()
 //
 //                    }
             }
@@ -104,7 +108,7 @@ class GistFragment : Fragment(R.layout.fragment_gist) {
 
     private fun deleteGist() {
         GlobalScope.launch {
-            val bool = viewModel.deleteGist()
+            val bool = viewModel.deleteGist(gistCalls)
             successfulRouteFun(bool, R.string.success_delete)
 
         }
@@ -122,7 +126,7 @@ class GistFragment : Fragment(R.layout.fragment_gist) {
                 )
             )
             lifecycleScope.launch {
-                val bool = viewModel.editGist(filesModel)
+                val bool = viewModel.editGist(api = gistCalls, filesPostModel = filesModel)
                 withContext(Dispatchers.Main) {
                     successfulRouteFun(bool, R.string.successful_edit)
                 }
@@ -140,7 +144,7 @@ class GistFragment : Fragment(R.layout.fragment_gist) {
             lifecycleScope.launch {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-                    val bundle = viewModel.getGistsList()
+                    val bundle = viewModel.getGistsList(gistCalls)
                     router.routeToList(bundle)
                 }
             }
@@ -200,7 +204,7 @@ class GistFragment : Fragment(R.layout.fragment_gist) {
             withContext(Dispatchers.IO) {
                 if (viewModel.checkIfPasswordIsSet(passwordDao = passwordDao)) {
                     withContext(Dispatchers.Main) {
-                        router.routeToPassCheck(Gist_String)
+//                        router.routeToPassCheck(Gist_String)
 //                        flag = requireArguments().get(Constants.CHECK_FRAGM_KEY) as Boolean
 //                        if (flag == true) {
 //                            alertDialogDelete()

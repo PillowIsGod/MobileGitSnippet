@@ -9,9 +9,7 @@ import dagger.android.AndroidInjectionModule
 import dagger.android.AndroidInjector
 import pillowisgod.com.myapplication.MainActivity
 import pillowisgod.com.myapplication.MainApp
-import pillowisgod.com.myapplication.di.modules.ActivityBindingModule
-import pillowisgod.com.myapplication.di.modules.FragmentBindingModule
-import pillowisgod.com.myapplication.di.modules.RoomModule
+import pillowisgod.com.myapplication.di.modules.*
 import pillowisgod.com.myapplication.fragments.MasterPassDialogFragment
 import pillowisgod.com.myapplication.fragments.PassCheckFragment
 
@@ -19,7 +17,8 @@ import pillowisgod.com.myapplication.fragments.PassCheckFragment
 @Component(modules = [RoomModule::class,
 AndroidInjectionModule::class,
 ActivityBindingModule::class,
-FragmentBindingModule::class])
+FragmentBindingModule::class,
+RetrofitLoginModule::class])
 @AppScope
 interface ApplicationComponent : AndroidInjector<MainApp> {
 

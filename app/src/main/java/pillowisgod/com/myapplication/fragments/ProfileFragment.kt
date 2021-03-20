@@ -7,12 +7,14 @@ import android.webkit.CookieManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.squareup.picasso.Picasso
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pillowisgod.com.myapplication.R
+import pillowisgod.com.myapplication.data.repositories.GistCalls
 import pillowisgod.com.myapplication.data.repositories.model.loginmodels.SuccessfulResponseModel
 import pillowisgod.com.myapplication.helpers.Constants.MODEL_KEY
 import pillowisgod.com.myapplication.routers.ProfileRouter
@@ -20,14 +22,18 @@ import pillowisgod.com.myapplication.routers.ProfileRouter
 import pillowisgod.com.myapplication.viewmodels.factories.ProfileViewModelFactory
 
 import pillowisgod.com.myapplication.viewmodels.models.ProfileViewModel
+import javax.inject.Inject
 
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private lateinit var viewModel : ProfileViewModel
     private lateinit var router: ProfileRouter
+    @Inject
+    lateinit var gistCalls: GistCalls
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
         val profileViewModelFactory = ProfileViewModelFactory()
         viewModel = ViewModelProvider(this, profileViewModelFactory).get(ProfileViewModel::class.java)
@@ -53,7 +59,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private fun moveToList() {
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
-                val gists = viewModel.getGistsList()
+                val gists = viewModel.getGistsList(gistCalls)
                 router.routeToList(gists)
             }
         }

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_gist.etGistContent
 import kotlinx.android.synthetic.main.fragment_gist.etGistDesc
 import kotlinx.android.synthetic.main.fragment_gist.etGistName
@@ -16,6 +17,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pillowisgod.com.myapplication.R
+import pillowisgod.com.myapplication.data.repositories.GistCalls
 import pillowisgod.com.myapplication.data.repositories.model.FilesInnerModel
 import pillowisgod.com.myapplication.data.repositories.model.FilesObj
 import pillowisgod.com.myapplication.data.repositories.model.FilesPostModel
@@ -25,6 +27,7 @@ import pillowisgod.com.myapplication.routers.GistFragmRouter
 import pillowisgod.com.myapplication.viewmodels.factories.GistViewModelFactory
 import pillowisgod.com.myapplication.viewmodels.models.GistViewModel
 import java.lang.Exception
+import javax.inject.Inject
 
 
 class GistAddFragm : Fragment(R.layout.fragment_gist_add) {
@@ -32,9 +35,12 @@ class GistAddFragm : Fragment(R.layout.fragment_gist_add) {
     private lateinit var viewModel: GistViewModel
     private lateinit var router: GistFragmRouter
     private var flag = false
+    @Inject
+    lateinit var gistCalls: GistCalls
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
         val gistViewModelFactory = GistViewModelFactory()
         viewModel = ViewModelProvider(this, gistViewModelFactory).get(GistViewModel::class.java)
@@ -57,7 +63,7 @@ class GistAddFragm : Fragment(R.layout.fragment_gist_add) {
         setEditingForm()
         fbDeclineAdding.setOnClickListener {
             GlobalScope.launch {
-                val bundle = viewModel.getGistsList()
+                val bundle = viewModel.getGistsList(gistCalls)
                 router.routeToListFromAdd(bundle)
             }
         }
@@ -78,11 +84,11 @@ class GistAddFragm : Fragment(R.layout.fragment_gist_add) {
                 )
             )
             GlobalScope.launch {
-                val bool = viewModel.postGist(model)
+                val bool = viewModel.postGist(api = gistCalls, filesPostModel = model)
                 withContext(Dispatchers.Main) {
                     if (bool) {
                         Toast.makeText(context, R.string.success_add, Toast.LENGTH_SHORT).show()
-                        val bundle = viewModel.getGistsList()
+                        val bundle = viewModel.getGistsList(gistCalls)
                         router.routeToListFromAdd(bundle)
                     }
                 }

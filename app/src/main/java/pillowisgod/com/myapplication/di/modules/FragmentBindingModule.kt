@@ -2,9 +2,7 @@ package pillowisgod.com.myapplication.di.modules
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
-import pillowisgod.com.myapplication.fragments.GistFragment
-import pillowisgod.com.myapplication.fragments.MasterPassDialogFragment
-import pillowisgod.com.myapplication.fragments.PassCheckFragment
+import pillowisgod.com.myapplication.fragments.*
 
 @Module
 abstract class FragmentBindingModule {
@@ -14,4 +12,10 @@ abstract class FragmentBindingModule {
     abstract fun passCheckFragment() : PassCheckFragment
     @ContributesAndroidInjector
     abstract fun gistFragment() : GistFragment
+    @ContributesAndroidInjector
+    abstract fun loginFragment() : LoginFragment
+    @ContributesAndroidInjector
+    abstract fun gistAddFragment() : GistAddFragm
+    @ContributesAndroidInjector
+    abstract fun profileFragment() : ProfileFragment
 }

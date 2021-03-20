@@ -4,10 +4,10 @@ import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import pillowisgod.com.myapplication.data.repositories.GistCalls
+import pillowisgod.com.myapplication.data.repositories.LoginCall
 import pillowisgod.com.myapplication.data.repositories.model.loginmodels.AccessToken
 import pillowisgod.com.myapplication.data.repositories.model.loginmodels.SuccessfulResponseModel
-import pillowisgod.com.myapplication.data.repositories.retrofits.ApiGitRetrofit
-import pillowisgod.com.myapplication.data.repositories.retrofits.LoginRetrofitInstance
 import pillowisgod.com.myapplication.helpers.Constants
 import pillowisgod.com.myapplication.helpers.Constants.CALLBACK_URL
 import pillowisgod.com.myapplication.helpers.Constants.CLIENT_ID
@@ -24,7 +24,7 @@ class LoginViewModel : ViewModel() {
 
     fun getLoginResponse(uri: Uri) : String {
         var s : String? = null
-        if (uri != null && uri.toString().startsWith(CALLBACK_URL))
+        if (uri.toString().startsWith(CALLBACK_URL))
         {
             s = uri.getQueryParameter("code")!!
         }
@@ -35,10 +35,10 @@ class LoginViewModel : ViewModel() {
         return uri.getQueryParameter("code")!!
     }
 
-    suspend fun getAccessToken(code : String) : AccessToken {
+    suspend fun getAccessToken(api : LoginCall, code : String) : AccessToken {
         var accessToken : AccessToken? = null
-            val response = LoginRetrofitInstance.api.getAccessToken(CLIENT_ID,
-                Constants.CLIENT_SECRET, code!!)
+            val response = api.getAccessToken(CLIENT_ID,
+                Constants.CLIENT_SECRET, code)
             Log.e("TAG", "This is the coroutine response -> $response")
            if (response.isSuccessful) {
                 accessToken = response.body()!!
@@ -47,24 +47,25 @@ class LoginViewModel : ViewModel() {
             }
         return accessToken!!
     }
-    suspend fun authorizeGit(token : String) : SuccessfulResponseModel {
-        val response = ApiGitRetrofit.api.getLoginCall(token)
-        val body = response.body()
+    suspend fun authorizeGit(api : GistCalls, token : String) : SuccessfulResponseModel {
+        val response = api.getLoginCall(token)
+        val body = response
         Log.e("TAG", "This is the response -> $response")
-        return body!!
+        return body
 
     }
 
-    suspend fun logToAcc(uri: Uri): SuccessfulResponseModel {
+    suspend fun logToAcc(apiLoginCall: LoginCall, apiGist: GistCalls,  uri: Uri): SuccessfulResponseModel {
         var response: SuccessfulResponseModel? = null
 
         val code = getCode(uri)
-        accessToken = getAccessToken(code)
+        Log.e("TAG", "This is received code -> $code")
+        accessToken = getAccessToken(apiLoginCall, code)
         Log.e("TAG", "MVVM TOKEN QUERY -> $accessToken")
-        response = authorizeGit(token = "Bearer ${accessToken?.accessToken}")
+        response = authorizeGit(token = "Bearer ${accessToken?.accessToken}", api = apiGist)
         Log.e("TAG", "Response -> $response")
 
-        return response!!
+        return response
     }
 
 
