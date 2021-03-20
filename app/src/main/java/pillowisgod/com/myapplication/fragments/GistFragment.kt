@@ -12,6 +12,8 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import dagger.android.AndroidInjection
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_gist.*
 import kotlinx.coroutines.*
 import pillowisgod.com.myapplication.R
@@ -20,12 +22,14 @@ import pillowisgod.com.myapplication.data.repositories.model.FilesObj
 import pillowisgod.com.myapplication.data.repositories.model.FilesPostModel
 import pillowisgod.com.myapplication.data.repositories.model.getmodels.GistFilesModel
 import pillowisgod.com.myapplication.data.repositories.model.getmodels.GistResponseModel
+import pillowisgod.com.myapplication.db.PasswordDao
 import pillowisgod.com.myapplication.helpers.Constants
 import pillowisgod.com.myapplication.helpers.Constants.Gist_String
 import pillowisgod.com.myapplication.routers.GistFragmRouter
 import pillowisgod.com.myapplication.viewmodels.factories.GistViewModelFactory
 import pillowisgod.com.myapplication.viewmodels.models.GistViewModel
 import java.lang.Exception
+import javax.inject.Inject
 
 
 class GistFragment : Fragment(R.layout.fragment_gist) {
@@ -34,7 +38,11 @@ class GistFragment : Fragment(R.layout.fragment_gist) {
     private lateinit var router: GistFragmRouter
     private var flag = false
 
+    @Inject
+    lateinit var passwordDao: PasswordDao
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
         val gistViewModelFactory = GistViewModelFactory()
         viewModel = ViewModelProvider(this, gistViewModelFactory).get(GistViewModel::class.java)
@@ -51,14 +59,14 @@ class GistFragment : Fragment(R.layout.fragment_gist) {
             }
 
             fbDeleteGist.setOnClickListener {
-//                checkIfPassIsSet()
+                checkIfPassIsSet()
 //                    router.routeToPassCheck(Gist_String)
 //
 //                    flag = requireArguments().get(Constants.CHECK_FRAGM_KEY) as Boolean
 //
 //
 //                    if (flag == true) {
-                        alertDialogDelete()
+//                alertDialogDelete()
 //
 //                    }
             }
@@ -79,7 +87,7 @@ class GistFragment : Fragment(R.layout.fragment_gist) {
 //                checkIfPassIsSet()
 //                    flag = requireArguments().get(Constants.CHECK_FRAGM_KEY) as Boolean
 //                    if (flag == true) {
-                        intentMessageTelegram(viewModel.gistFilesModel.value?.files?.filename?.content)
+                intentMessageTelegram(viewModel.gistFilesModel.value?.files?.filename?.content)
 //                    }
             }
         }
@@ -190,7 +198,7 @@ class GistFragment : Fragment(R.layout.fragment_gist) {
     fun checkIfPassIsSet() {
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
-                if (viewModel.checkIfPasswordIsSet(requireContext())) {
+                if (viewModel.checkIfPasswordIsSet(passwordDao = passwordDao)) {
                     withContext(Dispatchers.Main) {
                         router.routeToPassCheck(Gist_String)
 //                        flag = requireArguments().get(Constants.CHECK_FRAGM_KEY) as Boolean

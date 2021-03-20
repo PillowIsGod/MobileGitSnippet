@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModelProvider
 import pillowisgod.com.myapplication.viewmodels.models.LoginViewModel
 import pillowisgod.com.myapplication.viewmodels.models.MasterPassViewModel
 
-class MasterPassViewModelFactory(val context: Context) : ViewModelProvider.Factory {
+class MasterPassViewModelFactory() : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return MasterPassViewModel(context = context) as T
+            return MasterPassViewModel() as T
         }
     }
