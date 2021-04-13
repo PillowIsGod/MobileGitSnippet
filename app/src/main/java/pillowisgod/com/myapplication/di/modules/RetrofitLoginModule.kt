@@ -3,11 +3,15 @@ package pillowisgod.com.myapplication.di.modules
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.scopes.ActivityScoped
+import dagger.hilt.android.scopes.FragmentScoped
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import pillowisgod.com.myapplication.data.repositories.GistCalls
 import pillowisgod.com.myapplication.data.repositories.LoginCall
-import pillowisgod.com.myapplication.di.AppScope
+
 import pillowisgod.com.myapplication.helpers.Constants.BASE_API_URL
 import pillowisgod.com.myapplication.helpers.Constants.BASE_URL
 import retrofit2.Retrofit
@@ -15,19 +19,22 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton
 
+
 @Module
+@InstallIn(SingletonComponent::class)
 class RetrofitLoginModule {
-    @AppScope
+
     @Provides
+    @Singleton
     fun provideClient() : OkHttpClient {
         return OkHttpClient
             .Builder()
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()
     }
-    @AppScope
     @Provides
-    @Named("loginRetrofit")
+    @Singleton
+    @LoginRetrofit
     fun provideLoginRetrofit(okHttpClient: OkHttpClient) : Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -35,14 +42,16 @@ class RetrofitLoginModule {
             .client(okHttpClient)
             .build()
     }
-    @AppScope
+
     @Provides
-    fun provideLoginApi(@Named("loginRetrofit")retrofit: Retrofit) : LoginCall {
+    @Singleton
+    fun provideLoginApi(@LoginRetrofit retrofit: Retrofit) : LoginCall {
         return retrofit.create(LoginCall::class.java)
     }
-    @AppScope
+
     @Provides
-    @Named("apiRetrofit")
+    @Singleton
+    @ApiRetrofit
     fun provideApiRetrofit(okHttpClient: OkHttpClient) : Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_API_URL)
@@ -50,9 +59,10 @@ class RetrofitLoginModule {
             .client(okHttpClient)
             .build()
     }
-    @AppScope
+
     @Provides
-    fun provideGistApi(@Named("apiRetrofit") retrofit : Retrofit) : GistCalls {
+    @Singleton
+    fun provideGistApi(@ApiRetrofit retrofit : Retrofit) : GistCalls {
         return retrofit.create(GistCalls::class.java)
     }
 }

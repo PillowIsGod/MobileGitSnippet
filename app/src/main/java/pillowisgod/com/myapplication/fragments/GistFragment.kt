@@ -4,53 +4,36 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import dagger.android.AndroidInjection
-import dagger.android.support.AndroidSupportInjection
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_gist.*
 import kotlinx.coroutines.*
 import pillowisgod.com.myapplication.R
-import pillowisgod.com.myapplication.data.repositories.GistCalls
 import pillowisgod.com.myapplication.data.repositories.model.FilesInnerModel
 import pillowisgod.com.myapplication.data.repositories.model.FilesObj
 import pillowisgod.com.myapplication.data.repositories.model.FilesPostModel
-import pillowisgod.com.myapplication.data.repositories.model.getmodels.GistFilesModel
 import pillowisgod.com.myapplication.data.repositories.model.getmodels.GistResponseModel
-import pillowisgod.com.myapplication.db.PasswordDao
 import pillowisgod.com.myapplication.helpers.Constants
-import pillowisgod.com.myapplication.helpers.Constants.Gist_String
 import pillowisgod.com.myapplication.routers.GistFragmRouter
-import pillowisgod.com.myapplication.viewmodels.factories.GistViewModelFactory
 import pillowisgod.com.myapplication.viewmodels.models.GistViewModel
 import java.lang.Exception
-import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class GistFragment : Fragment(R.layout.fragment_gist) {
 
-    private lateinit var viewModel: GistViewModel
+    private val viewModel: GistViewModel by viewModels()
     private lateinit var router: GistFragmRouter
     private var flag = false
 
-    @Inject
-    lateinit var passwordDao: PasswordDao
-    @Inject
-    lateinit var gistCalls : GistCalls
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
-        val gistViewModelFactory = GistViewModelFactory()
-        viewModel = ViewModelProvider(this, gistViewModelFactory).get(GistViewModel::class.java)
-        viewModel.postGistValue(api = gistCalls,
-            gistModel = requireArguments().get(Constants.SINGLE_GIST_MODEL_KEY) as GistResponseModel)
+        viewModel.postGistValue(gistModel = requireArguments().get(Constants.SINGLE_GIST_MODEL_KEY) as GistResponseModel)
     }
 
 
@@ -108,7 +91,7 @@ class GistFragment : Fragment(R.layout.fragment_gist) {
 
     private fun deleteGist() {
         GlobalScope.launch {
-            val bool = viewModel.deleteGist(gistCalls)
+            val bool = viewModel.deleteGist()
             successfulRouteFun(bool, R.string.success_delete)
 
         }
@@ -126,7 +109,7 @@ class GistFragment : Fragment(R.layout.fragment_gist) {
                 )
             )
             lifecycleScope.launch {
-                val bool = viewModel.editGist(api = gistCalls, filesPostModel = filesModel)
+                val bool = viewModel.editGist(filesPostModel = filesModel)
                 withContext(Dispatchers.Main) {
                     successfulRouteFun(bool, R.string.successful_edit)
                 }
@@ -144,7 +127,7 @@ class GistFragment : Fragment(R.layout.fragment_gist) {
             lifecycleScope.launch {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-                    val bundle = viewModel.getGistsList(gistCalls)
+                    val bundle = viewModel.getGistsList()
                     router.routeToList(bundle)
                 }
             }
@@ -202,7 +185,7 @@ class GistFragment : Fragment(R.layout.fragment_gist) {
     fun checkIfPassIsSet() {
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
-                if (viewModel.checkIfPasswordIsSet(passwordDao = passwordDao)) {
+                if (viewModel.checkIfPasswordIsSet()) {
                     withContext(Dispatchers.Main) {
 //                        router.routeToPassCheck(Gist_String)
 //                        flag = requireArguments().get(Constants.CHECK_FRAGM_KEY) as Boolean

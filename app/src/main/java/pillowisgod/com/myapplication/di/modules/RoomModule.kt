@@ -4,19 +4,22 @@ import android.content.Context
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import pillowisgod.com.myapplication.db.PasswordDao
 import pillowisgod.com.myapplication.db.PasswordDatabase
-import pillowisgod.com.myapplication.di.AppScope
 import javax.inject.Singleton
 
 
 @Module
+@InstallIn(SingletonComponent::class)
 class RoomModule() {
 
 
-    @AppScope
     @Provides
-    fun provideDatabase(context: Context) : PasswordDatabase {
+    @Singleton
+    fun provideDatabase(@ApplicationContext context: Context) : PasswordDatabase {
         return Room.databaseBuilder(
             context,
             PasswordDatabase::class.java,
@@ -24,8 +27,8 @@ class RoomModule() {
         ).build()
     }
 
-    @AppScope
     @Provides
+    @Singleton
     fun providePasswordDao(passwordDatabase: PasswordDatabase) : PasswordDao {
         return passwordDatabase.passwordDao()
     }

@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import pillowisgod.com.myapplication.data.repositories.GistCalls
 import pillowisgod.com.myapplication.data.repositories.model.FilesPostModel
@@ -14,9 +15,12 @@ import pillowisgod.com.myapplication.data.repositories.model.getmodels.GistFiles
 import pillowisgod.com.myapplication.data.repositories.model.getmodels.GistResponseModel
 import pillowisgod.com.myapplication.db.PasswordDao
 import pillowisgod.com.myapplication.helpers.Constants
+import javax.inject.Inject
 
-
-class GistViewModel : ViewModel() {
+@HiltViewModel
+class GistViewModel @Inject constructor(
+    private val gistCalls: GistCalls,
+    private val passwordDao: PasswordDao) : ViewModel() {
 
     private var gistResponse = MutableLiveData<GistResponseModel>()
     private var gistModelWithFiles = MutableLiveData<GistFilesModel>()
@@ -24,16 +28,16 @@ class GistViewModel : ViewModel() {
     val gistFilesModel: LiveData<GistFilesModel> = gistModelWithFiles
 
 
-    fun postGistValue(api : GistCalls, gistModel: GistResponseModel) {
+    fun postGistValue(gistModel: GistResponseModel) {
         gistResponse.value = gistModel
-        getGistData(api)
+        getGistData()
     }
 
 
-    private fun getGistData(api : GistCalls) {
+    private fun getGistData() {
         viewModelScope.launch {
             val code = gistResponse.value?.url?.substringAfterLast("/")
-            val response = api.getGist(code!!)
+            val response = gistCalls.getGist(code!!)
             Log.e("TAG", "This is the response -> $response")
             if (response.isSuccessful) {
                 gistModelWithFiles.postValue(response.body())
@@ -42,10 +46,10 @@ class GistViewModel : ViewModel() {
         }
     }
 
-    suspend fun deleteGist(api : GistCalls): Boolean {
+    suspend fun deleteGist(): Boolean {
         var bool = false
         val code = gistResponse.value?.url?.substringAfterLast("/")
-        val response = api.deleteGist(
+        val response = gistCalls.deleteGist(
             token = "Bearer ${Constants.accessToken?.accessToken}",
             code!!
         )
@@ -56,35 +60,35 @@ class GistViewModel : ViewModel() {
         return bool
     }
 
-    suspend fun getGistsList(api : GistCalls): List<GistResponseModel> {
+    suspend fun getGistsList(): List<GistResponseModel> {
         var body: List<GistResponseModel>? = null
         val response =
-            api.getGistsList(token = "Bearer ${Constants.accessToken?.accessToken}")
+            gistCalls.getGistsList(token = "Bearer ${Constants.accessToken?.accessToken}")
         if (response.isSuccessful) {
             body = response.body()
         }
         return body!!
     }
 
-    suspend fun editGist(api : GistCalls, filesPostModel: FilesPostModel): Boolean {
+    suspend fun editGist(filesPostModel: FilesPostModel): Boolean {
         var bool = false
         val code = gistResponse.value?.url?.substringAfterLast("/")
-        if (api.editGist(
+        if (gistCalls.editGist(
                 token = "Bearer ${Constants.accessToken?.accessToken}",
                 gistID = code!!, files = filesPostModel
             ).isSuccessful
         ) {
             bool = true
-            getGistData(api)
+            getGistData()
         }
 
         return bool
     }
 
 
-    suspend fun postGist(api : GistCalls, filesPostModel: FilesPostModel): Boolean {
+    suspend fun postGist(filesPostModel: FilesPostModel): Boolean {
         var bool = false
-        val response = api.postGist(
+        val response = gistCalls.postGist(
             token = "Bearer ${Constants.accessToken?.accessToken}",
             files = filesPostModel
         )
@@ -105,7 +109,7 @@ class GistViewModel : ViewModel() {
         }
     }
 
-    suspend fun checkIfPasswordIsSet(passwordDao: PasswordDao): Boolean {
+    suspend fun checkIfPasswordIsSet(): Boolean {
         var bool = false
         val data = passwordDao.getAll()
         if (data.size > 0) {

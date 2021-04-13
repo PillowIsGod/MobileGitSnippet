@@ -1,19 +1,19 @@
 package pillowisgod.com.myapplication.viewmodels.models
 
-import android.content.Context
-import androidx.core.content.ContentProviderCompat.requireContext
+
 import androidx.lifecycle.ViewModel
-import androidx.room.Room
+import dagger.hilt.android.lifecycle.HiltViewModel
 import pillowisgod.com.myapplication.db.PasswordDao
-import pillowisgod.com.myapplication.db.PasswordDatabase
 import pillowisgod.com.myapplication.db.PasswordEntity
+import javax.inject.Inject
 
-class MasterPassViewModel() : ViewModel() {
+@HiltViewModel
+class MasterPassViewModel @Inject constructor(private val roomDao: PasswordDao) : ViewModel() {
 
 
 
 
-    suspend fun checkIfPasswordCorrect(roomDao: PasswordDao, passToCheck : String) : Boolean {
+    suspend fun checkIfPasswordCorrect(passToCheck : String) : Boolean {
         val dbPass = roomDao.getAll()
         if (passToCheck.equals(dbPass[0].password)) {
             return true
@@ -21,14 +21,14 @@ class MasterPassViewModel() : ViewModel() {
         return false
     }
 
-    suspend fun insertPass(roomDao: PasswordDao, passwordEntity : PasswordEntity) {
-        checkIfEmpty(roomDao = roomDao)
+    suspend fun insertPass(passwordEntity : PasswordEntity) {
+        checkIfEmpty()
         roomDao.insertAll(passwordEntity)
     }
 
 
 
-    suspend fun checkIfEmpty(roomDao: PasswordDao) {
+    suspend fun checkIfEmpty() {
         val data = roomDao.getAll()
         if(data.size > 0) {
             roomDao.deletePassword(data[0])
